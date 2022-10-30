@@ -13,8 +13,8 @@ final class Checker {
     static let shared = Checker()
     private init() {}
     
-  private  let login: String = "user"
-   private  let password: String = "pass"
+  private  let login: String = "U"
+   private  let password: String = "p"
 
     
     func check( login:String, password: String) -> Bool {

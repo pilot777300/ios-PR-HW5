@@ -48,6 +48,8 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
         view.addSubview(scroll)
         scroll.addSubview(cv)
         setConstraints()
+        x.subscribe(self)
+    
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
@@ -58,13 +60,15 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
 
        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
        {
+           
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath)  as! PhotosCollectionViewCell
            cell.backgroundColor = UIColor.green
-           receive(images: newPic)
            let data = newPic[indexPath.row]
-           cell.image.image =  data //UIImage(named: "\(data)")
-           
+           cell.image.image = data //UIImage(named: "\(data)"
+           receive(images: newPic)
+          
            return cell
+           
        }
 
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
@@ -96,11 +100,10 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
 }
 
     extension PhotosViewController: ImageLibrarySubscriber {
-        func receive(images: [UIImage]) {
-     
-        x.subscribe(self)
-        x.addImagesWithTimer(time: 0.5, repeat: 11)
-        
+        func receive(images: [UIImage])
+        {
+      
+            x.addImagesWithTimer(time: 2, repeat: 10, userImages: newPic)
     }
     
     

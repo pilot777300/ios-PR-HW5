@@ -7,6 +7,7 @@
 
 import UIKit
 import StorageService
+import iOSIntPackage
 
 
 class ProfileViewController: UIViewController {
@@ -25,6 +26,10 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let removeSubsc = ImagePublisherFacade()
+        removeSubsc.removeSubscription(for: PhotosViewController())
+        
         
         #if DEBUG
         user.fullName = "Fake account"

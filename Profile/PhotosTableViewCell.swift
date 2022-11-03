@@ -14,6 +14,7 @@ public struct Pictures {
     public var picturesAPI = [Pictures]()
 
     public var newPic = [UIImage]()
+    public var em = [UIImage]()
 
 class PhotosTableViewCell: UITableViewCell {
     

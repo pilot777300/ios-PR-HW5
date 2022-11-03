@@ -11,7 +11,7 @@ import iOSIntPackage
 
 class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
  
-    var x = ImagePublisherFacade()
+   public let publisherFasade = ImagePublisherFacade()
     
     private lazy var scroll: UIScrollView = {
         let scr = UIScrollView(frame: .zero)
@@ -48,42 +48,40 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
         view.addSubview(scroll)
         scroll.addSubview(cv)
         setConstraints()
-        x.subscribe(self)
+        publisherFasade.subscribe(self)
+        publisherFasade.addImagesWithTimer(time: 0.5, repeat: 10, userImages: newPic)
+        
+            }
     
-    }
+        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+                    {
+                return newPic.count
+            }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-       {
-           
-           return newPic.count
-       }
-
        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
-       {
-           
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath)  as! PhotosCollectionViewCell
-           cell.backgroundColor = UIColor.green
-           let data = newPic[indexPath.row]
-           cell.image.image = data //UIImage(named: "\(data)"
-           receive(images: newPic)
-          
-           return cell
-           
-       }
+                    {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath)  as! PhotosCollectionViewCell
+               cell.backgroundColor = UIColor.green
+              let pic = newPic[indexPath.row]
+               cell.image.image = pic
+                    receive(images: newPic)
+              collectionView.reloadData()
+               return cell
+            }
 
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-       {
+                {
            return CGSize(width: 100, height: 100)
-       }
+            }
 
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets
-       {
+                {
            return UIEdgeInsets(top: 25, left: 25, bottom: 5, right: 5)
-       }
-    
-    func setConstraints() {
-        let safeArea = view.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
+            }
+
+        func setConstraints() {
+            let safeArea = view.safeAreaLayoutGuide
+            NSLayoutConstraint.activate([
             
         scroll.topAnchor.constraint(equalTo: safeArea.topAnchor),
         scroll.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
@@ -95,16 +93,13 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
         cv.widthAnchor.constraint(equalTo: scroll.widthAnchor, constant: 8),
         cv.heightAnchor.constraint(equalTo: scroll.heightAnchor)
         
-        ])
+            ])
+        }
     }
-}
 
-    extension PhotosViewController: ImageLibrarySubscriber {
-        func receive(images: [UIImage])
-        {
-      
-            x.addImagesWithTimer(time: 2, repeat: 10, userImages: newPic)
+        extension PhotosViewController: ImageLibrarySubscriber {
+            func receive(images: [UIImage]) {
+            newPic = images
+            cv.reloadData()
+        }
     }
-    
-    
-}

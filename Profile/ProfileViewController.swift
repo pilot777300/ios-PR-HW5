@@ -27,10 +27,6 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let removeSubsc = ImagePublisherFacade()
-        removeSubsc.removeSubscription(for: PhotosViewController())
-        
-        
         #if DEBUG
         user.fullName = "Fake account"
         user.status = "Fake status"

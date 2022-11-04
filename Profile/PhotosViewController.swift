@@ -68,6 +68,8 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
               collectionView.reloadData()
                return cell
             }
+    
+    
 
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
                 {
@@ -95,8 +97,15 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
         
             ])
         }
+    override func viewWillDisappear(_ animated: Bool) {
+         super.viewWillDisappear(animated)
+         navigationController?.navigationBar.isHidden = true
+        publisherFasade.removeSubscription(for: self)
+         publisherFasade.rechargeImageLibrary()
+        }
     }
 
+ 
         extension PhotosViewController: ImageLibrarySubscriber {
             func receive(images: [UIImage]) {
             newPic = images
